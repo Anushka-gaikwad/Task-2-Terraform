@@ -5,6 +5,37 @@ resource "aws_vpc" "test" {
     }
 }
 
+# security group creation
+
+resource "aws_security_group" "sg" {
+     name = "tf_sg"
+     vpc_id = aws_vpc.test.vpc_id
+
+   ingress {
+        from_port = 80
+        to_port = 80
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/16"]
+   }
+   ingress {
+        from_port = 8080
+        to_port = 8080
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/16"]
+   }
+   ingress {
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/16"]
+   }
+   egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+   }
+}
 ## internet gateway
 
 resource "aws_internet_gateway" "igw" {
@@ -49,14 +80,14 @@ resource "aws_route_table_association" "ass" {
 
 ## ec2 creation
 
-resource "aws_instance" "devops" {
+resource "aws_instance" "my-ec2" {
     ami = "ami-068c0051b15cdb816"
     instance_type = "t2.micro"
-    key_name  = "N.verginia-key"
+    key_name  = "linux.pem"
     subnet_id = aws_subnet.public.id
     vpc_security_group_ids = aws_security_group.sg.id
     tags = {
-        Name = "auto-ec2"
+        Name = "teraaform-ec2"
     }
     associate_public_ip_address = true
 }
