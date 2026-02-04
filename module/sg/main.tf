@@ -1,6 +1,6 @@
 resource "aws_security_group" "sg" {
      name = "tf_sg"
-     vpc_id = aws_vpc.test.vpc_id
+     vpc_id = var.vpc_id
 
    ingress {
         from_port = 80
