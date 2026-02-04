@@ -91,3 +91,8 @@ resource "aws_instance" "my-ec2" {
     }
     associate_public_ip_address = true
 }
+
+module "ec2" {
+  source = "./modules/ec2"
+}
+
